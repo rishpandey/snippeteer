@@ -1,7 +1,7 @@
 {
   "name": "snippeteer",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "The snippet master you always wanted.",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
@@ -14,14 +14,14 @@
     "tutorial",
     "demo"
   ],
-  "author": "GitHub",
+  "author": "Rishabh Pandey",
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^1.8.4"
   },
   "dependencies": {
+    "fuzzy-search": "^2.0.1",
     "nedb": "^1.8.0",
-    "node-key-sender": "^1.0.10",
     "robotjs": "latest"
   }
 }

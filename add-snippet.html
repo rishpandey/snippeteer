@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Add a text snippet</title>
+  </head>
+  <body>
+      <style>
+      body{
+        background: transparent;
+        overflow: hidden;
+        background: #696969;
+        -webkit-font-smoothing: subpixel-antialiased;
+      }
+
+      div{
+        position: relative;
+        background: #696969;
+      }
+
+      textarea{
+        position: absolute;
+        background: transparent;
+        color: blue;
+        border: 0;
+        height: 410px;
+        width: 510px;
+        padding: 20px;
+        opacity: 0.8;
+        margin-left: -10px;
+        margin-top: -10px; 
+      }
+
+      textarea,
+      textarea::-webkit-input-placeholder {
+        color: silver;
+        text-align: left;
+        /*padding-left: 30px;*/
+        font-size: 20px;
+        opacity: 1;
+      }
+    </style>
+
+    <div>
+
+        <textarea id="snippet" type="text" name="snippet" placeholder="Text" required></textarea>
+      
+    </div>
+    <script>
+      // You can also require other files to run in this process
+      require('./renderer.js')
+      const remote = require('electron').remote;
+      var window = remote.getCurrentWindow();
+
+      window.onload = function() {
+
+        document.getElementById("snippet").focus();
+        handleFocusOut();
+
+      };
+
+      // if ESC is pressed close window
+      document.onkeydown = function(evt) {
+        evt = evt || window.event;
+        var isEscape = false;
+        if ("key" in evt) {
+          isEscape = (evt.key == "Escape" || evt.key == "Esc");
+        } else {
+          isEscape = (evt.keyCode == 27);
+        }
+        if (isEscape) {
+          window.close();
+        }
+      }; 
+
+
+      document.onkeypress = function(event){
+        if(event.key === "Enter"){
+          if(document.getElementById('snippet').value !== ""){
+            sendToMain();
+          }else{
+            window.close();
+          }
+
+        }
+      };
+
+      function handleFocusOut(){ 
+              var win = remote.getCurrentWindow();
+              
+              win.on('blur', () => {
+                window.close();
+              })       
+      }
+
+      function sendToMain(){
+        text = document.getElementById('snippet').value;
+      
+        const { ipcRenderer } = require('electron');
+
+        ipcRenderer.send('add-snippet', text);
+        
+        // close window
+        const remote = require('electron').remote;
+        var window = remote.getCurrentWindow();
+        window.close();
+      }
+    </script>
+  </body>
+</html>

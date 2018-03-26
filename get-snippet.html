@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+</head>
+<script src="http://localhost:35729/livereload.js"></script>
+<body>
+	<style>
+	body{
+		background: transparent;
+		overflow: hidden;
+		background: #696969;
+		-webkit-font-smoothing: subpixel-antialiased;
+	}
+
+	div{
+		position: relative;
+		background: #696969;
+	}
+
+	input{
+		position: absolute;
+		background: transparent;
+		color: blue;
+		border: 0;
+		height: 50px;
+		width: 670px;
+		margin-left: -20px;
+		padding: 0 0 20px 30px;
+		opacity: 0.8;
+	}
+
+	input,
+	input::-webkit-input-placeholder {
+		color: silver;
+		text-align: left;
+		/*padding-left: 30px;*/
+		font-size: 20px;
+		opacity: 1;
+	}
+
+	#identifier{
+		z-index: 10;
+		color: #C0C0C0;
+	}
+
+	#suggestion{
+		z-index: 9;
+		color: black;  
+		padding-left: 100px;
+	}
+</style>
+
+<div>
+	<input id="identifier" type="text" placeholder="Search" required>  
+	<input id="suggestion" type="text" data-id="" value="" disabled>  
+</div>
+
+<script>
+			// You can also require other files to run in this process
+			require('./renderer.js')
+			const { ipcRenderer } = require('electron');
+
+			const remote = require('electron').remote;
+			var window = remote.getCurrentWindow();
+			
+
+			// shit to do onload
+			window.onload = function() {
+
+				// focus on input
+				document.getElementById("identifier").focus();
+
+				handleFocusOut();
+
+
+				// if ESC is pressed close window
+				document.onkeydown = function(evt) {
+					evt = evt || window.event;
+					var isEscape = false;
+					if ("key" in evt) {
+						isEscape = (evt.key == "Escape" || evt.key == "Esc");
+					} else {
+						isEscape = (evt.keyCode == 27);
+					}
+					if (isEscape) {
+						closeWindow();
+					}
+				}; 
+
+
+				// handle enter press
+				(document.getElementById('identifier')).addEventListener("keyup", function(event) {
+
+					var suggestion = document.getElementById('suggestion');
+					var searchText = this.value;
+
+					if(searchText.length === 0){
+						
+						suggestion.value = "";
+						
+						suggestion.dataset.id = "";      
+						
+						suggestion.style.paddingLeft = '100px';
+						return;
+					}
+
+					if(isCharacterKeyPress(event)){
+
+						if (event.key === "Enter") {
+							data = document.getElementById('suggestion').getAttribute('data-id');              
+							const { ipcRenderer } = require('electron');
+
+							ipcRenderer.send('get-snippet',data);
+							return;
+						}
+
+						ipcRenderer.send('console-log',searchText);
+
+
+						ipcRenderer.send('suggest-snippet',searchText);
+
+						var padding = (window.getComputedStyle(document.getElementById('suggestion'))).getPropertyValue('padding-left');
+						padding = padding.replace('px', '');
+						suggestion.style.paddingLeft = (parseInt(padding) + 7) + 'px';
+
+					}
+					else if(event.key == "Backspace"){
+						ipcRenderer.send('suggest-snippet',searchText);		
+
+						var padding = (window.getComputedStyle(document.getElementById('suggestion'))).getPropertyValue('padding-left');
+						padding = parseInt(padding.replace('px', ''));
+
+						if(padding>106){
+							suggestion.style.paddingLeft = ((padding) - 7) + 'px';
+						}
+
+
+
+					} 
+
+				}); 
+
+				function isCharacterKeyPress(evt) {
+					if (typeof evt.which == "undefined") {
+								// This is IE, which only fires keypress events for printable keys
+								return true;
+							} else if (typeof evt.which == "number" && evt.which > 0) {
+								// In other browsers except old versions of WebKit, evt.which is
+								// only greater than zero if the keypress is a printable key.
+								// We need to filter out backspace and ctrl/alt/meta key combinations
+								return !evt.ctrlKey && !evt.metaKey && !evt.altKey && evt.which != 8;
+							}
+							return false;
+						}
+
+						function handleFocusOut(){
+							const remote = require('electron').remote;
+							var window = remote.getCurrentWindow();
+							
+							window.on('blur', () => {
+								window.close();
+							})
+						}
+
+
+
+						function closeWindow(){
+							window.close();
+						}  
+
+					}; 
+
+					ipcRenderer.on('show-suggestion', (event, snippet, id) => {  
+						// console.log(id);
+						document.getElementById('suggestion').value = snippet;
+						document.getElementById('suggestion').dataset.id = id;      
+					});
+
+
+				</script>
+			</body>
+			</html>
