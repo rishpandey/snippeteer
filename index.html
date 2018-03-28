@@ -1,19 +1,78 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Hello World!</title>
-  </head>
-  <body>
-    <h1>Hello World!</h1>
-    <!-- All of the Node.js APIs are available in this renderer process. -->
-    We are using Node.js <script>document.write(process.versions.node)</script>,
-    Chromium <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="shortcut icon" href="assets/img/favicon.png">
 
-    <script>
-      // You can also require other files to run in this process
-      require('./renderer.js')
-    </script>
-  </body>
+  <title>SNIPPETEER</title>
+
+  <!-- Custom styles for this template -->
+  <link href="assets/css/main.css" rel="stylesheet">
+
+  <!-- Fonts from Google Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400,900' rel='stylesheet' type='text/css'>
+
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <style type="text/css">
+  .center{
+    text-align: center;mask-type: 
+    margin: 0 auto;
+  }
+</style>
+<body>
+
+	<div id="headerwrap">
+    <div class="topnav">
+      <a href="#" onclick="return handleMin();" ><b>-</b></a>
+      <a href="#" onclick="return handleClose();" ><b>X</b></a>
+    </div>
+    
+		<div class="container center" >
+      <div class="logo">
+        <img alt="logo" src="http://via.placeholder.com/150x150">  
+      </div>
+      <h1>SNIPPETEER</h1>
+
+      <h2>Makes you more awesome and productive by storing and providing your text snippets through blazing fast search.</h2>
+
+      <div class="shortcut" style="">
+        <h2 style="color: white;"><b>Edit Shortcuts</b></h2>
+
+        <span style="margin-right: 10px"><b>ADD:</b></span>
+        <span style="color:white">Command or Ctrl + Shift + Plus(+)</span>
+        <br>
+        <span style="margin-right: 10px"><b>Search:</b></span>
+        <span style="color:white">Command or Ctrl + Alt + Tab</span>
+
+      </div>
+
+      <script type="text/javascript">
+        const { ipcRenderer } = require('electron');
+        const remote = require('electron').remote;
+        var window = remote.getCurrentWindow();
+
+        function handleMin(){ 
+          remote.BrowserWindow.getFocusedWindow().minimize();
+        }
+
+        function handleClose(){          
+          ipcRenderer.send('close-app');
+          
+          window.close();
+
+        }
+      </script>
+    </div>	
+  </div><!-- /headerwrap -->
+
+</body>
 </html>

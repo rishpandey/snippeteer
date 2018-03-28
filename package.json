@@ -4,7 +4,9 @@
   "description": "The snippet master you always wanted.",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "pack": "build --dir",
+    "dist": "build"
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
@@ -17,11 +19,42 @@
   "author": "Rishabh Pandey",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "^1.8.4"
+    "electron": "^1.8.4",
+    "electron-builder": "^20.8.1"
   },
   "dependencies": {
     "fuzzy-search": "^2.0.1",
     "nedb": "^1.8.0",
     "robotjs": "latest"
+  },
+  "build": {
+    "appId": "snippeteer",
+    "mac": {
+        "category": "your.app.category.type"
+    },
+    "dmg": {
+      "contents": [
+        {
+          "x": 110,
+          "y": 150
+        },
+        {
+          "x": 240,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    },
+    "win": {
+      "target": "NSIS",
+      "icon": "build/icon.ico"
+    }
   }
 }

@@ -1,28 +1,48 @@
 const path = require('path')
 const url = require('url')
+const fs = require('fs');
 
 // Module to control application
 const electron = require('electron')
-const { app, BrowserWindow,  globalShortcut, ipcMain} = electron
+const { app, BrowserWindow,  globalShortcut, ipcMain, remote} = electron
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow, getWindow
 
+var dbPath = app.getPath('appData')+'/snippeteer/snips.json';
+
+if(! fs.existsSync(dbPath)){
+	console.log('a');
+	try{
+		fs.writeFileSync(dbPath, '');
+	}catch(error){
+		console.log('Error in writing');
+		console.log(error);
+	}
+
+}
+
+
+
+// fs.readFileSync(dbPath);
+
 // nedb
 var Datastore = require('nedb')
-	, db = new Datastore({ filename: 'snips.json', autoload: true });
+, db = new Datastore({ filename: dbPath, autoload: true });
 var dataset = [];
 var FuzzySearch = require('fuzzy-search');
 var searcher = null;
 
 // setup everything
 function createWindow () {
-	app.dock.hide();
+	// app.dock.hide();
 
 	// Create the browser window.
-	mainWindow = new BrowserWindow({width: 400, height: 300})
-	mainWindow.minimize();  
+	mainWindow = new BrowserWindow({width: 800, height: 500, frame: false})
+
+	// mainWindow.minimize();  
+	// mainWindow.webContents.openDevTools();
 
 	loadData();
 
@@ -99,7 +119,7 @@ app.on('will-quit', () => {
 		// Unregister all shortcuts.
 		globalShortcut.unregisterAll()
 
-})
+	})
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
@@ -110,6 +130,7 @@ app.on('window-all-closed', function () {
 	if (process.platform !== 'darwin') {
 		app.quit()
 	}
+
 })
 
 app.on('activate', function () {
@@ -120,6 +141,13 @@ app.on('activate', function () {
 })
 
 // IPC Handlers
+ipcMain.on('close-app', function(event){
+
+	if (process.platform !== 'darwin') {
+		app.quit();
+	}
+
+});
 
 ipcMain.on('add-snippet', function(event, text){
 	
@@ -138,40 +166,41 @@ ipcMain.on('get-snippet', function(event, id){
 	db.findOne({ _id: id }, function (err, docs) {
 
 		if(docs){     
-				robot.typeString(docs.snippet);
+			robot.typeString(docs.snippet);
 		}
 	});
 })
 
 
 ipcMain.on('suggest-snippet', function(event, text){
-	var snippet = (searcher.search(text))[0];
-	if(snippet){
-		console.log(snippet);
-		console.log('next');
-		getWindow.webContents.send('show-suggestion', snippet.snippet, snippet._id);
-	}else{
-		getWindow.webContents.send('show-suggestion', "", "");
+	if(searcher){
+		var snippet = (searcher.search(text))[0];
+		if(snippet){
+			getWindow.webContents.send('show-suggestion', snippet.snippet, snippet._id);
+		}else{
+			getWindow.webContents.send('show-suggestion', "", "");
+		}
 	}
 }) 
 
 ipcMain.on('console-log', function(a){
-	console.log(a);
+	// console.log(a);
 })
 
 // Helper Functions
 
 function loadData(){
 
-		db.find({}, function (err, docs) {
-			
+	db.find({}, function (err, docs) {
+		if(docs.length > 0){
 			dataset = docs;
-			
+
 			searcher = new FuzzySearch(docs, ['snippet'], {
 				caseSensitive: false,
 				sort:true
-			});
-		});
+			});				
+		}
+	});
 
 
 

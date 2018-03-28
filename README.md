@@ -13,7 +13,9 @@ git clone https://github.com/therishabhpandey/snippeteer.git
 cd snippeteer
 # Install dependencies
 npm install
-# Run the app
+# Run dist
+npm run dist
+# Run app
 npm start
 ```
 
