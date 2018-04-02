@@ -1,62 +1,135 @@
+.center{
+	text-align: center;mask-type: 
+	margin: 0 auto;
+}
+
+
+a, a:visited, a:hover, a:active {
+	color: #FFF !important;
+}
+
+
+a.button {
+	cursor: pointer;
+	display: block;
+	position: absolute;
+	top: 65%;
+	left: 300px;
+	width: 120px;
+	padding: 5px 10px;
+	border: solid;
+	border-color: rgba(139, 218, 216, 0.24);
+	margin: 10px 20px 10px 0;
+	font-weight: 400;
+	text-align: center;
+	line-height: 50px;
+	color: #FFF ;
+	border-radius: 5px;
+	transition: all 0.2s ;
+    border-width: 2px;
+	background: transparent;
+	text-decoration: none;
+
+}
+
+a.button:hover {
+	cursor: pointer;
+	color: white !important;
+	margin-top: 3px;
+	margin-bottom: 5px;
+}
+
+
+
+
 .topnav {
-    background-color: transparent;
-    overflow: hidden;
-    position: absolute;
-    left: 88%;
-    top: 1%;
+	background-color: transparent;
+	overflow: hidden;
+	position: absolute;
+	left: 88%;
+	top: 1%;
 }
 
 /* Style the links inside the navigation bar */
 .topnav a {
-    border-radius: 25px;
-    float: left;
-    color: #f2f2f2;
-    text-align: center;
-    padding: 5px 8px;
-    margin-left: 15px;
-    text-decoration: none;
-    font-size: 17px;
+	cursor: pointer;
+	border-radius: 25px;
+	float: left;
+	color: #105689 !important;
+	text-align: center;
+	padding: 5px 8px;
+	margin-left: 15px;
+	text-decoration: none;
+	font-size: 17px;
 }
 
-.topnav a:visited {
-    color: white;
+.topnac a, a:visited, a:hover, a:active {
+	color: #105689 !important;
+	cursor: pointer;
+
 }
 
 /* Change the color of links on hover */
 .topnav a:hover  {
-    background-color: #ddd;
-    color: black;
+	cursor: pointer;
+	background-color: #ddd;
+	color: black;
 }
 
 
-body {
-    margin: 0;
-    background-color: #f2f2f2;
-    font-family: 'Lato', sans-serif;
-    font-weight: 300;
-    font-size: 16px;
-    color: #555;
 
-    -webkit-font-smoothing: antialiased;
-    -webkit-overflow-scrolling: touch;
-    overflow: hidden;
+.tag-line h2{
+	color: #042c58;
+	margin-top: 0 !important;
+}
+
+
+.config a{
+	cursor: pointer;
+	text-decoration: none;
+    border: solid;
+    font-size: 14px;
+	border-color: rgba(139, 218, 216, 0.24);
+    border-width: 2px;
+    padding: 5px 10px;
+    display: block;
+    width: 50%;
+	border-radius: 5px;
+    margin: 0 auto;
+}
+
+.config a:visited, .config a:hover, .config a:active {
+	color: #FFF !important;
+	cursor: pointer;
+	
+}
+
+
+/*--------------*/
+body {
+	margin: 0;
+	background-color: #f2f2f2;
+	font-family: 'Lato', sans-serif;
+	font-weight: 300;
+	font-size: 16px;
+	color: #555;
+
+	-webkit-font-smoothing: antialiased;
+	-webkit-overflow-scrolling: touch;
+	overflow: hidden;
 }
 
 /* Titles */
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Lato', sans-serif;
-    font-weight: 300;
-    color: #333;
+	font-family: 'Lato', sans-serif;
+	font-weight: 300;
+	color: #333;
 }
 
 h1 {
 	font-size: 40px;
 }
 
-h3 {
-	color: #95a5a6;
-	font-weight: 400;
-}
 
 h4 {
 	color: #95a5a6;
@@ -66,50 +139,50 @@ h4 {
 
 /* Paragraph & Typographic */
 p {
-    line-height: 28px;
-    margin-bottom: 25px;
-    font-size: 16px;
+	line-height: 28px;
+	margin-bottom: 25px;
+	font-size: 16px;
 }
 
 .centered {
-    text-align: center;
+	text-align: center;
 }
 
 /* Links */
 a {
-    color: #3498db;
-    word-wrap: break-word;
+	color: #3498db;
+	word-wrap: break-word;
 
-    -webkit-transition: color 0.1s ease-in, background 0.1s ease-in;
-    -moz-transition: color 0.1s ease-in, background 0.1s ease-in;
-    -ms-transition: color 0.1s ease-in, background 0.1s ease-in;
-    -o-transition: color 0.1s ease-in, background 0.1s ease-in;
-    transition: color 0.1s ease-in, background 0.1s ease-in;
+	-webkit-transition: color 0.1s ease-in, background 0.1s ease-in;
+	-moz-transition: color 0.1s ease-in, background 0.1s ease-in;
+	-ms-transition: color 0.1s ease-in, background 0.1s ease-in;
+	-o-transition: color 0.1s ease-in, background 0.1s ease-in;
+	transition: color 0.1s ease-in, background 0.1s ease-in;
 }
 
 a:hover,
 a:focus {
-    color: #7b7b7b;
-    text-decoration: none;
-    outline: 0;
+	color: #7b7b7b;
+	text-decoration: none;
+	outline: 0;
 }
 
 a:before,
 a:after {
-    -webkit-transition: color 0.1s ease-in, background 0.1s ease-in;
-    -moz-transition: color 0.1s ease-in, background 0.1s ease-in;
-    -ms-transition: color 0.1s ease-in, background 0.1s ease-in;
-    -o-transition: color 0.1s ease-in, background 0.1s ease-in;
-    transition: color 0.1s ease-in, background 0.1s ease-in;
+	-webkit-transition: color 0.1s ease-in, background 0.1s ease-in;
+	-moz-transition: color 0.1s ease-in, background 0.1s ease-in;
+	-ms-transition: color 0.1s ease-in, background 0.1s ease-in;
+	-o-transition: color 0.1s ease-in, background 0.1s ease-in;
+	transition: color 0.1s ease-in, background 0.1s ease-in;
 }
 
- hr {
-    display: block;
-    height: 1px;
-    border: 0;
-    border-top: 1px solid #ccc;
-    margin: 1em 0;
-    padding: 0;
+hr {
+	display: block;
+	height: 1px;
+	border: 0;
+	border-top: 1px solid #ccc;
+	margin: 1em 0;
+	padding: 0;
 }
 
 .navbar-default {
@@ -146,28 +219,31 @@ i {
 
 /* HeaderWrap */
 #headerwrap {
-	/* background: url(../img/bg01.jpg) no-repeat center top; */
-	background-color: #3498db;
+
+	background: url(../img/bg.png) no-repeat center top; 
+	/*background: url(img/bg.png);*/
 	background-attachment: relative;
 	background-position: center center;
 
-	padding: 20px; 
-    -webkit-background-size: 100%;
-    -moz-background-size: 100%;
-    -o-background-size: 100%;
-    background-size: 100%;
+	padding: 10px 20px; 
+	-webkit-background-size: 100%;
+	-moz-background-size: 100%;
+	-o-background-size: 100%;
+	background-size: 100%;
 
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    
-    height: 500px; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+
+	height: 600px; 
+
 }
 
 #headerwrap h1 {
 	margin-bottom: 15px;
-	color: white;
+	color: #105689;
+	margin-top: 0;
 	font-size: 45px;
 	font-weight: 300;
 	letter-spacing: 1px;

@@ -2,14 +2,16 @@
 <html>
 <head>
 	<meta charset="UTF-8">
+	<link href='http://fonts.googleapis.com/css?family=Lato:300,400,900' rel='stylesheet' type='text/css'>
 </head>
-<script src="http://localhost:35729/livereload.js"></script>
+
 <body>
 	<style>
 	body{
 		background: transparent;
+        font-family: 'Lato', sans-serif;
 		overflow: hidden;
-		background: #696969;
+		background: linear-gradient(to right, #11558a, #55c2c1);
 		-webkit-font-smoothing: subpixel-antialiased;
 	}
 
@@ -32,9 +34,11 @@
 
 	input,
 	input::-webkit-input-placeholder {
-		color: silver;
+		text-indent: 50px;  
+		color: white;
 		text-align: left;
 		/*padding-left: 30px;*/
+		font-weight: 300;
 		font-size: 20px;
 		opacity: 1;
 	}
@@ -49,20 +53,28 @@
 		color: black;  
 		padding-left: 100px;
 	}
+
+	#logo{
+		position: absolute;
+		left: 5px;
+		top: 5px; 
+	}
 </style>
 
 <div>
-	<input id="identifier" type="text" placeholder="Search" required>  
+    <img alt="logo" src="../img/logo.svg" id="logo" width="40" height="40">  
+
+	<input id="identifier" type="text" placeholder="Snippeteer Search" required>  
 	<input id="suggestion" type="text" data-id="" value="" disabled>  
 </div>
 
 <script>
 			// You can also require other files to run in this process
-			require('./renderer.js')
+			// require('./renderer.js')
 			const { ipcRenderer } = require('electron');
 
 			const remote = require('electron').remote;
-			var window = remote.getCurrentWindow();
+			var win = remote.getCurrentWindow();
 			
 
 			// shit to do onload
@@ -155,19 +167,20 @@
 						}
 
 						function handleFocusOut(){
-							const remote = require('electron').remote;
-							var window = remote.getCurrentWindow();
-							
-							window.on('blur', () => {
-								window.close();
+							win.on('blur', () => {
+								win.hide();
+			          			location.reload();
 							})
 						}
 
 						function closeWindow(){
-							window.close();
+							win.hide();
+		          			location.reload();          			
 						}  
 
 					}; 
+
+
 
 					ipcRenderer.on('show-suggestion', (event, snippet, id) => {  
 						// console.log(id);

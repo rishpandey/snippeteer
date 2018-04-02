@@ -20,17 +20,30 @@
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^1.8.4",
-    "electron-builder": "^20.8.1"
+    "electron-builder": "^20.8.1",
+    "eslint-config-google": "^0.9.1",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.10.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.7.0",
+    "eslint-plugin-standard": "^3.0.1"
   },
   "dependencies": {
+    "auto-launch": "^5.0.5",
+    "electron-config": "^1.0.0",
     "fuzzy-search": "^2.0.1",
+    "lru-cache": "^4.1.2",
     "nedb": "^1.8.0",
     "robotjs": "latest"
   },
   "build": {
     "appId": "snippeteer",
     "mac": {
-        "category": "your.app.category.type"
+      "category": "your.app.category.type",
+      "extendInfo": {
+        "LSBackgroundOnly": 1,
+        "LSUIElement": 1
+      }
     },
     "dmg": {
       "contents": [

@@ -1,110 +1,121 @@
 const path = require('path')
 const url = require('url')
-const fs = require('fs');
+const fs = require('fs')
+
+const Config = require('electron-config')
+const config = new Config()
 
 // Module to control application
 const electron = require('electron')
-const { app, BrowserWindow,  globalShortcut, ipcMain, remote} = electron
+const {
+  app, 
+  BrowserWindow,
+  globalShortcut,
+  ipcMain
+} = electron
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
-let mainWindow, getWindow
+var AutoLaunch = require('auto-launch');
+var snippeteerAutoLaunch = new AutoLaunch({
+  name: 'SNIPPETEER'
+})
 
-var dbPath = app.getPath('appData')+'/snippeteer/snips.json';
-
-if(! fs.existsSync(dbPath)){
-	console.log('a');
-	try{
-		fs.writeFileSync(dbPath, '');
-	}catch(error){
-		console.log('Error in writing');
-		console.log(error);
-	}
-
+// enable autolaunch 
+if(config.get('startup') !== false){
+  console.log('Working');
+  snippeteerAutoLaunch.enable();
 }
+ 
+// Keep a global reference of the window object, if you don't, the window will 
+// be closed automatically when the JavaScript object is garbage collected.
+let mainWindow, getWindow, configWindow, keyWindow
 
+var dbPath = app.getPath('appData') + '/snippeteer/snips.json'
 
+if (!fs.existsSync(dbPath)) {
+  try {
+    fs.writeFileSync(dbPath, '') 
+  } catch (error) {
+    console.log('Error in writing')
+    console.log(error)
+  }
+}
 
 // fs.readFileSync(dbPath);
 
 // nedb
-var Datastore = require('nedb')
-, db = new Datastore({ filename: dbPath, autoload: true });
-var dataset = [];
-var FuzzySearch = require('fuzzy-search');
-var searcher = null;
+var Datastore = require('nedb') 
+var db = new Datastore({
+  filename: dbPath,
+  autoload: true
+})
+
+var FuzzySearch = require('fuzzy-search')
+var searcher = null
 
 // setup everything
 function createWindow () {
-	// app.dock.hide();
+  app.dock.hide();
 
-	// Create the browser window.
-	mainWindow = new BrowserWindow({width: 800, height: 500, frame: false})
+  let Tray = electron.Tray;
+  let Menu = electron.Menu;
 
-	// mainWindow.minimize();  
-	// mainWindow.webContents.openDevTools();
+  tray = new Tray(__dirname+'/assets/img/logo_small.png')
 
-	loadData();
+  tray.setToolTip('SNIPPETEER')
 
-
-	// and load the index.html of the app.
-	mainWindow.loadURL(url.format({
-		pathname: path.join(__dirname, 'index.html'),
-		protocol: 'file:',
-		slashes: true
-	}));
-
-	// Open the DevTools.
-	// mainWindow.webContents.openDevTools()
-
-	// Emitted when the window is closed.
-	// 
-	mainWindow.on('closed', function () {
-		// Dereference the window object, usually you would store windows
-		// in an array if your app supports multi windows, this is the time
-		// when you should delete the corresponding element.
-		mainWindow = null
-	})
-
-	// Register shortcut
-	
-	var addShortcut = 'CommandOrControl+Shift+Plus';
-	var searchShortcut = 'CommandOrControl+Alt+Tab';
-
-	const addSnippet = globalShortcut.register(addShortcut, () => {
-
-		addWindow = new BrowserWindow({width: 500, height: 400, frame: false})
-
-		addWindow.loadURL(url.format({
-			pathname: path.join(__dirname, 'add-snippet.html'),
-			protocol: 'file:',
-			slashes: true
-		}));
-
-		// addWindow.webContents.openDevTools();
+  var contextMenu = Menu.buildFromTemplate([
+    { label: 'Quit SNIPPETEER', click: function(){ app.quit() } }
+  ])
 
 
-	})
+  tray.on('click', () => {
+    mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show()
+  })
+
+  tray.on('right-click', (event, bounds) => {
+    tray.popUpContextMenu(contextMenu);
+  });
 
 
-	const getSnippet = globalShortcut.register(searchShortcut, () => {
+  // Create the browser window.
+  mainWindow = new BrowserWindow({
+    width: 750,
+    height: 600,
+    frame: false
+  })
 
-		getWindow = new BrowserWindow({width: 650, height: 50, frame: false})
-		position = getWindow.getPosition();
-		getWindow.setPosition(position[0], position[1]-120);
-		getWindow.loadURL(url.format({
-			pathname: path.join(__dirname, 'get-snippet.html'),
-			protocol: 'file:',
-			slashes: true
-		}));
-		
-		// getWindow.webContents.openDevTools();
+  // mainWindow.minimize()
+  // mainWindow.webContents.openDevTools() 
 
+  loadData()
 
-		getWindow.setAlwaysOnTop(true, "floating");
-		getWindow.setVisibleOnAllWorkspaces(true);
-		getWindow.setFullScreenable(false);
-	})
+  // and load the index.html of the app.
+  mainWindow.loadURL(url.format({
+    pathname: path.join(__dirname, 'assets' , 'html' , 'index.html'),
+    protocol: 'file:',
+    slashes: true
+  }))
+
+  mainWindow.on('show', () => {
+    tray.setHighlightMode('always')
+  })
+  mainWindow.on('hide', () => {
+    tray.setHighlightMode('never')
+  })
+
+  mainWindow.on('closed', function () {
+    // Dereference the window object, usually you would store windows
+    // in an array if your app supports multi windows, this is the time
+    // when you should delete the corresponding element.
+    mainWindow.hide()
+
+  })
+
+  loadWindows()
+
+  // Register shortcut
+  loadShortcut()
+  
 }
 
 // This method will be called when Electron has finished
@@ -113,107 +124,221 @@ function createWindow () {
 app.on('ready', createWindow)
 
 app.on('will-quit', () => {
-		// Unregister a shortcut.
-		globalShortcut.unregister('CommandOrControl+X')
-
-		// Unregister all shortcuts.
-		globalShortcut.unregisterAll()
-
-	})
-
-// Quit when all windows are closed.
-app.on('window-all-closed', function () {
-
-	// On OS X it is common for applications and their menu bar
-	// to stay active until the user quits explicitly with Cmd + Q
-
-	if (process.platform !== 'darwin') {
-		app.quit()
-	}
-
+  globalShortcut.unregisterAll()
 })
 
-app.on('activate', function () {
-	// On OS X it's common to re-create closed mainWindow dock icon is clicked
-	if (mainWindow === null) {
-		createWindow()
-	}
-})
 
 // IPC Handlers
-ipcMain.on('close-app', function(event){
-
-	if (process.platform !== 'darwin') {
-		app.quit();
-	}
-
-});
-
-ipcMain.on('add-snippet', function(event, text){
-	
-	addSnipToDb(text);
-	loadData();
-
-})  
-
-
-ipcMain.on('get-snippet', function(event, id){
-
-	electron.Menu.sendActionToFirstResponder('hide:');
-	getWindow.close(); 
-	const robot = require('robotjs');
-	
-	db.findOne({ _id: id }, function (err, docs) {
-
-		if(docs){     
-			robot.typeString(docs.snippet);
-		}
-	});
+ipcMain.on('add-snippet', function (event, text) {
+  addSnipToDb(text);
+  loadData();
 })
 
+ipcMain.on('get-snippet', function(event, id) {
 
-ipcMain.on('suggest-snippet', function(event, text){
-	if(searcher){
-		var snippet = (searcher.search(text))[0];
-		if(snippet){
-			getWindow.webContents.send('show-suggestion', snippet.snippet, snippet._id);
-		}else{
-			getWindow.webContents.send('show-suggestion', "", "");
-		}
-	}
-}) 
+  const robot = require('robotjs');
 
-ipcMain.on('console-log', function(a){
-	// console.log(a);
+  if (process.platform == 'darwin') {
+    electron.Menu.sendActionToFirstResponder('hide:');
+  }else{
+  	robot.keyTap('tab', ['alt']);
+  }
+
+  getWindow.hide();
+
+  db.findOne({
+    _id: id
+  }, function(err, docs) {
+    if (docs) {
+
+      const {clipboard} = require('electron')
+
+      var existingData = clipboard.readText();
+
+      clipboard.clear();
+
+
+      clipboard.writeText((docs.snippet).toString());
+
+      if(process.platform === 'darwin'){
+        robot.keyTap('v', ['command']);
+      }else{
+        robot.keyTap('v', ['control']);
+      }
+
+      console.log()
+      clipboard.clear();
+      
+      clipboard.writeText(existingData);
+
+    }
+  })
 })
+
+ipcMain.on('suggest-snippet', function(event, text) {
+  if (searcher) {
+    var snippet = (searcher.search(text))[0];
+    if (snippet) {
+      getWindow.webContents.send('show-suggestion', snippet.snippet, snippet._id);
+    } else {
+      getWindow.webContents.send('show-suggestion', "", "");
+    }
+  }
+})
+
+ipcMain.on('show-config', function(a) {
+
+  configWindow.show();
+
+})
+
+ipcMain.on('register-shortcut', function (event, text) {
+
+  console.log(text);
+  global.shortcut = text;
+
+  // keyWindow.reload();
+
+  keyWindow.show();
+
+  // keyWindow.webContents.openDevTools();
+
+})
+
+ipcMain.on('save-shortcut', function (event, accelerator) {
+
+  console.log(accelerator + '\n' + global.shortcut)
+  setShortcut(global.shortcut, accelerator)
+})
+
 
 // Helper Functions
 
-function loadData(){
-
-	db.find({}, function (err, docs) {
-		if(docs.length > 0){
-			dataset = docs;
-
-			searcher = new FuzzySearch(docs, ['snippet'], {
-				caseSensitive: false,
-				sort:true
-			});				
-		}
-	});
-
-
-
+function loadData () {
+  db.find({}, function(err, docs) {
+    if (docs.length > 0) {
+        dataset = docs;
+        searcher = new FuzzySearch(docs, ['snippet'], {
+          caseSensitive: false,
+          sort: true
+        });
+    }
+  })
 }
 
-function searchData(str){
-	
-	return searcher.search(str);
-
+function searchData (str) {
+  return searcher.search(str)
 }
 
-function addSnipToDb(text){
-	db.insert({snippet: text}, function (err, newDoc) {});
+function addSnipToDb(text) {
+  db.insert({
+    snippet: text
+  }, function (err, newDoc) {})
 }
 
+function getShortcut (type) {
+  return config.get(type);
+}
 
+function setShortcut (type, accelerator) {
+  config.set(type, accelerator);
+  loadShortcut();
+}
+
+function loadShortcut () {
+  var addShortcut = getShortcut('add')
+  var searchShortcut = getShortcut('search')
+  var showShortcut = getShortcut('show')
+
+  if (addShortcut) {
+
+    const addSnippet = globalShortcut.register(addShortcut, () => {
+
+      addWindow.show();
+
+    })
+  }
+
+  if (searchShortcut) {
+    const getSnippet = globalShortcut.register(searchShortcut, () => {
+      getWindow.show();
+    })
+  }
+
+  if (showShortcut) {
+    const showApp = globalShortcut.register(showShortcut, () => {})
+  }
+}
+
+function loadWindows(){
+	configWindow = new BrowserWindow({
+	  width: 400,
+	  height: 400,
+	  frame: false,
+	  show: false,
+	  parent: mainWindow, 
+	  modal: true
+	})
+
+	configWindow.loadURL(url.format({
+	  pathname: path.join(__dirname, 'assets' , 'html' ,'get-config.html'),
+	  protocol: 'file:',
+	  slashes: true
+	}))
+
+	configWindow.webContents.openDevTools();
+	configWindow.setFullScreenable(false)
+
+	keyWindow = new BrowserWindow({
+	  width: 400,
+	  height: 60,
+	  frame: false,
+	  show: false,
+	})
+
+	keyWindow.loadURL(url.format({
+	  pathname: path.join(__dirname , 'assets' , 'html' , 'get-key.html'),
+	  protocol: 'file:',
+	  slashes: true
+	}))
+
+
+	keyWindow.setFullScreenable(false)
+
+	addWindow = new BrowserWindow({
+	  width: 500,
+	  height: 400,
+	  frame: false,
+	  show: false,
+	})
+
+
+	addWindow.loadURL(url.format({
+	  pathname: path.join(__dirname, 'assets' , 'html' , 'add-snippet.html'),
+	  protocol: 'file:',
+	  slashes: true
+	}))
+
+	// addWindow.webContents.openDevTools();
+
+	getWindow = new BrowserWindow({
+	  width: 650,
+	  height: 50,
+	  frame: false,
+	  show: false
+	})
+
+	var position = getWindow.getPosition()
+	getWindow.setPosition(position[0], position[1] - 120);
+	getWindow.loadURL(url.format({
+	  pathname: path.join(__dirname, 'assets' , 'html' , 'get-snippet.html'),
+	  protocol: 'file:',
+	  slashes: true
+	}))
+
+	// getWindow.webContents.openDevTools();
+
+	getWindow.setAlwaysOnTop(true, "floating");
+	getWindow.setVisibleOnAllWorkspaces(true);
+	getWindow.setFullScreenable(false);
+}

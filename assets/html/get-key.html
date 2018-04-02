@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<link href='http://fonts.googleapis.com/css?family=Lato:300,400,900' rel='stylesheet' type='text/css'>
+	<link href="../css/main.css" rel="stylesheet">
+</head>
+
+<body>
+	<style>
+	body {
+		margin: 0;
+		font-family: 'Lato', sans-serif;
+		background: linear-gradient(to right, #11558a, #55c2c1);
+		font-family: 'Lato', sans-serif;
+		font-weight: 300;
+		font-size: 16px;
+		color: white;
+
+		-webkit-font-smoothing: antialiased;
+		-webkit-overflow-scrolling: touch;
+		overflow: hidden;
+	}
+
+
+</style>
+
+<div>
+	<center>
+		<h3 id="info">PRESS the shortcut you want to use.</h3>		
+	</center>
+</div>
+
+<script>
+			var lru = require('lru-cache')({max: 256, maxAge: 250/*ms*/});
+
+			var fs = require('fs');
+			var origLstat = fs.lstatSync.bind(fs);
+
+			// NB: The biggest offender of thrashing lstatSync is the node module system
+			// itself, which we can't get into via any sane means.
+			require('fs').lstatSync = function(p) {
+			  let r = lru.get(p);
+			  if (r) return r;
+
+			  r = origLstat(p);
+			  lru.set(p, r);
+			  return r;
+			};
+			
+			const remote = require('electron').remote;
+			const win = remote.getCurrentWindow()
+		
+			win.on('blur', () => {
+        		win.hide();            
+      			location.reload();
+      		})
+
+			// require('./renderer.js')
+
+			const { ipcRenderer } = require('electron');
+	
+
+			var combo = [];
+			var finalCombo = [];
+
+			document.addEventListener("keydown", keyDownHandle, false);
+			document.addEventListener("keyup", keyUpHandle, false);
+
+			function keyUpHandle(event){
+				// if(combo.length == 0){
+				// 	finalCombo = [];
+				// }else{
+				// 	finalCombo.push(combo.shift());
+				// }
+			}
+
+			function keyDownHandle(event){
+
+				if(combo.length > 4){
+					combo = [];
+					document.getElementById('info').innerHTML = 'Try Again.';
+				}
+
+				combo.push(event.key);
+				var valid = checkForChar(event.keyCode);
+
+
+				if(valid){
+					if(combo.length > 1 && combo.length < 4){
+
+						sendAcceleratorAndQuit(combo);
+
+					}else{
+						combo = [];
+					}
+				}
+
+				console.log(combo);
+				
+			}
+
+			function checkForChar(keycode){
+				return  (keycode > 47 && keycode < 58)   || // number keys
+				        keycode == 32 || keycode == 13   || // spacebar & return key(s) (if you want to allow carriage returns)
+				        (keycode > 64 && keycode < 91)   || // letter keys
+				        (keycode > 95 && keycode < 112)  || // numpad keys
+				        (keycode > 185 && keycode < 193) || // ;=,-./` (in order)
+				        (keycode > 218 && keycode < 223);   // [\]' (in order)
+				 
+			}
+
+			function sendAcceleratorAndQuit(keys){
+
+				keys = keys.filter( function( el ){ return (typeof el !== "undefined"); } );
+				keys.sort( function( a, b){ return a - b; } );
+
+				// delete all duplicates from the array
+				for( var i=0; i<keys.length-1; i++ ) {
+				  if ( keys[i] == keys[i+1] ) {
+				    delete keys[i];
+				  }
+				}
+				console.log(keys);
+				var accelerator = '';
+				keys.forEach(function(key){
+					switch(key){
+						case 'Meta': 
+							// windows key or command key
+							if(process.platform == 'darwin'){
+								accelerator += 'Command + ';
+							}else{
+								accelerator += 'Super + ';
+							}
+							break;
+
+						case 'Alt':
+							accelerator += "Alt + ";
+							break;
+							
+						case 'Control':
+							accelerator += "Ctrl + ";
+							break;
+						
+						case 'Shift' :
+							accelerator += "Shift + ";
+							break;
+
+						case 'Tab' :
+							accelerator += "Tab + ";
+							break;
+						
+						default:
+							accelerator += " " + key;
+							break;
+					}
+				});
+
+				accelerator = accelerator.trim();
+				if(accelerator[accelerator.length - 1] == '+'){
+					accelerator = accelerator.substring(0, accelerator.length - 1);
+				}
+				ipcRenderer.send('save-shortcut', accelerator);
+
+				win.hide();
+          		location.reload();
+			}
+				</script>
+			</body>
+			</html>

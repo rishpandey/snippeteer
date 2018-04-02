@@ -3,3 +3,9 @@ node_modules
 snips\.json
 
 dist/
+
+.DS_Store
+
+\.eslintrc\.json
+
+\.eslintrc\.js

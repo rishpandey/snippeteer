@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Add a text snippet</title>
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400,900' rel='stylesheet' type='text/css'>
+  <link href="../css/main.css" rel="stylesheet">
+
+
+</head>
+<body>
+  <style>
+
+  .heading{
+    color: white;
+    font-weight: 500px;  
+  }
+
+  .center{
+    text-align: center;mask-type: 
+    margin: 0 auto;
+  }
+
+  body{
+    background: transparent;
+    overflow: hidden; 
+    background: linear-gradient(to right, #11558a, #55c2c1);
+    -webkit-font-smoothing: subpixel-antialiased;
+    color: white;
+  }
+
+  div{
+    color: white;
+    position: relative;
+    padding: 10px 20px;
+  }
+  
+  .topnav{
+    left: 80%;
+  }
+
+  .config p{
+    margin: 0;
+    padding: 0;
+    font-weight: 300;
+  }
+</style>
+
+<div class="center">
+  <div class="topnav">
+    <a href="#" onclick="return handleClose();" ><b>X</b></a>
+  </div>
+  
+  <h2 class="heading">SNIPPETEER</h2>
+  <p style="font-size: 16px;margin-bottom: 0;">It makes you more awesome and productive by searching and pasting your stored snippets.</p>  
+
+  <div class="config">
+    <h3 class="heading" style="font-size: 17px">REGISTER SHORTCUTS</h3>
+    <!-- <a href="#" class="shortcut-blk" onclick="return registerShortcut('show');">SHOW SNIPPETEER</a>
+    <br> -->
+
+    <a href="#" class="shortcut-blk" onclick="return registerShortcut('add');"><p>Add new snippet</p></a>
+    <br>
+    <a href="#" class="shortcut-blk" onclick="return registerShortcut('search');"><p>Search snippet</p></a>
+    <br>
+
+    <p><input type="checkbox" name="startup" id="startup">Launch at startup</p>
+
+    <br>
+
+  </div>
+
+</div>
+
+<script>
+
+      // require('./renderer.js')
+      const remote = require('electron').remote;
+      var win = remote.getCurrentWindow();
+
+      window.onload = function() {
+
+        handleFocusOut();
+        handleStartup();
+
+      };
+
+      // if ESC is pressed close window
+      document.onkeydown = function(evt) {
+        evt = evt || window.event;
+        var isEscape = false;
+        if ("key" in evt) {
+          isEscape = (evt.key == "Escape" || evt.key == "Esc");
+        } else {
+          isEscape = (evt.keyCode == 27);
+        }
+        if (isEscape) {
+          win.hide();
+          location.reload();
+        }
+      }; 
+
+      function handleFocusOut(){ 
+        var win = remote.getCurrentWindow();
+
+        win.on('blur', () => {
+          win.hide();
+        })       
+      }
+
+      function handleClose(){
+          win.hide();
+      }
+
+      function registerShortcut(type){
+
+        const { ipcRenderer } = require('electron');
+
+        ipcRenderer.send('register-shortcut', type);
+        
+      }
+
+      function handleStartup(){
+        var startupCheckBox = document.getElementById('startup');
+
+        const Config = require('electron-config')
+        const config = new Config()
+
+        if(config.get('startup') === undefined){
+          config.set('startup', true)
+          startupCheckBox.checked = true;
+        }
+
+        if(config.get('startup')){
+          startupCheckBox.checked = true;
+        }
+
+        startupCheckBox.addEventListener('click', function(event){
+          if(startupCheckBox.checked == true){
+            config.set('startup', true)
+          }else{
+            config.set('startup', false)
+          }
+        });
+      }
+    </script>
+  </body>
+  </html>

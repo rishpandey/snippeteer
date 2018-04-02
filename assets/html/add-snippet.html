@@ -2,6 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
+    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,900' rel='stylesheet' type='text/css'>
     <title>Add a text snippet</title>
   </head>
   <body>
@@ -9,8 +10,9 @@
       body{
         background: transparent;
         overflow: hidden;
-        background: #696969;
+        background: linear-gradient(to right, #11558a, #55c2c1);
         -webkit-font-smoothing: subpixel-antialiased;
+        font-family: 'Lato', sans-serif;
       }
 
       div{
@@ -33,8 +35,9 @@
 
       textarea,
       textarea::-webkit-input-placeholder {
-        color: silver;
+        color: white;
         text-align: left;
+        font-weight: 300;
         /*padding-left: 30px;*/
         font-size: 20px;
         opacity: 1;
@@ -48,9 +51,9 @@
     </div>
     <script>
       // You can also require other files to run in this process
-      require('./renderer.js')
+      // require('./renderer.js')
       const remote = require('electron').remote;
-      var window = remote.getCurrentWindow();
+      var win = remote.getCurrentWindow();
 
       window.onload = function() {
 
@@ -69,7 +72,8 @@
           isEscape = (evt.keyCode == 27);
         }
         if (isEscape) {
-          window.close();
+          win.hide();
+          location.reload();
         }
       }; 
 
@@ -79,7 +83,8 @@
           if(document.getElementById('snippet').value !== ""){
             sendToMain();
           }else{
-            window.close();
+            win.hide();
+            location.reload();
           }
 
         }
@@ -89,7 +94,8 @@
               var win = remote.getCurrentWindow();
               
               win.on('blur', () => {
-                window.close();
+                win.hide();
+                location.reload();
               })       
       }
 
@@ -100,10 +106,9 @@
 
         ipcRenderer.send('add-snippet', text);
         
-        // close window
-        const remote = require('electron').remote;
-        var window = remote.getCurrentWindow();
-        window.close();
+        win.hide();
+        location.reload();
+
       }
     </script>
   </body>
