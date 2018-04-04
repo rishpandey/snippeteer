@@ -75,12 +75,22 @@
           }
 
           function showConfig(){          
-
-            
             ipcRenderer.send('show-config');
-
           }
 
+          ipcRenderer.on('updateReady', () => {
+            const dialog = require('electron').remote.dialog
+
+            dialog.showMessageBox({
+              title: "Update SNIPPETEER",
+              message: "Do you want to update to newest version?",
+              buttons: ["YES", "NO"]
+            }, function(response){
+              if(response === 'YES'){
+                ipcRenderer.send('quitAndInstall');
+              }
+            });  
+          });
         </script>
       </div>	
     </div><!-- /headerwrap -->

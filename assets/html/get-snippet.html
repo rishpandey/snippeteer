@@ -7,6 +7,10 @@
 
 <body>
 	<style>
+	input:focus {
+	  outline: none;
+	}
+
 	body{
 		background: transparent;
         font-family: 'Lato', sans-serif;
@@ -76,6 +80,7 @@
 			const remote = require('electron').remote;
 			var win = remote.getCurrentWindow();
 			
+			var currentSnippets = [];
 
 			// shit to do onload
 			window.onload = function() {
@@ -117,6 +122,7 @@
 						return;
 					}
 
+
 					if(isCharacterKeyPress(event)){
 
 						if (event.key === "Enter") {
@@ -127,14 +133,29 @@
 							return;
 						}
 
+						else if(event.key === "Shift"){
+							console.log("pressed")
+							console.log(currentSnippets);
+							if(currentSnippets.length > 1){
+
+								if((snippetCounter+1) < currentSnippets.length){
+									snippetCounter++;
+								}else{
+									snippetCounter = 0;
+								}
+								document.getElementById('suggestion').value = currentSnippets[snippetCounter].snippet;
+								document.getElementById('suggestion').dataset.id = currentSnippets[snippetCounter].id;
+							
+							}
+						}
+						else{
 						// ipcRenderer.send('console-log',searchText);
-
-
 						ipcRenderer.send('suggest-snippet',searchText);
 
 						var padding = (window.getComputedStyle(document.getElementById('suggestion'))).getPropertyValue('padding-left');
 						padding = padding.replace('px', '');
 						suggestion.style.paddingLeft = (parseInt(padding) + 7) + 'px';
+						}
 
 					}
 					else if(event.key == "Backspace"){
@@ -182,10 +203,14 @@
 
 
 
-					ipcRenderer.on('show-suggestion', (event, snippet, id) => {  
-						// console.log(id);
-						document.getElementById('suggestion').value = snippet;
-						document.getElementById('suggestion').dataset.id = id;      
+					ipcRenderer.on('show-suggestion', (event, snippet) => {
+						if(snippet){
+							currentSnippets = snippet;
+							snippetCounter = 0;
+
+							document.getElementById('suggestion').value = snippet[snippetCounter].snippet;
+							document.getElementById('suggestion').dataset.id = snippet[snippetCounter].id;      
+						}  
 					});
 
 

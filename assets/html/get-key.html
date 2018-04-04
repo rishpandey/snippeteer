@@ -68,11 +68,7 @@
 			document.addEventListener("keyup", keyUpHandle, false);
 
 			function keyUpHandle(event){
-				// if(combo.length == 0){
-				// 	finalCombo = [];
-				// }else{
-				// 	finalCombo.push(combo.shift());
-				// }
+
 			}
 
 			function keyDownHandle(event){
@@ -88,11 +84,10 @@
 
 				if(valid){
 					if(combo.length > 1 && combo.length < 4){
-
 						sendAcceleratorAndQuit(combo);
-
 					}else{
 						combo = [];
+						document.getElementById('info').innerHTML = 'Try Again.'; 
 					}
 				}
 
@@ -160,6 +155,7 @@
 				if(accelerator[accelerator.length - 1] == '+'){
 					accelerator = accelerator.substring(0, accelerator.length - 1);
 				}
+
 				ipcRenderer.send('save-shortcut', accelerator);
 
 				win.hide();

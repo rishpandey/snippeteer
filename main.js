@@ -11,23 +11,15 @@ const {
   app, 
   BrowserWindow,
   globalShortcut,
-  ipcMain
+  ipcMain,
+  clipboard
 } = electron
 
-var AutoLaunch = require('auto-launch');
-var snippeteerAutoLaunch = new AutoLaunch({
-  name: 'SNIPPETEER'
-})
+const {autoUpdater} = require("electron-updater");
 
-// enable autolaunch 
-if(config.get('startup') !== false){
-  console.log('Working');
-  snippeteerAutoLaunch.enable();
-}
- 
 // Keep a global reference of the window object, if you don't, the window will 
 // be closed automatically when the JavaScript object is garbage collected.
-let mainWindow, getWindow, configWindow, keyWindow
+let mainWindow, getWindow, configWindow, keyWindow, addWindow
 
 var dbPath = app.getPath('appData') + '/snippeteer/snips.json'
 
@@ -54,7 +46,25 @@ var searcher = null
 
 // setup everything
 function createWindow () {
-  app.dock.hide();
+
+  if(process.platform === 'darwin'){
+    app.dock.hide();
+  }
+
+  var AutoLaunch = require('auto-launch');
+  var snippeteerAutoLaunch = new AutoLaunch({
+    name: 'SNIPPETEER',
+    isHidden: true
+  })
+
+  // enable autolaunch 
+  if(config.get('startup') !== false){
+    console.log('Working');
+    snippeteerAutoLaunch.enable();
+  }else{
+    snippeteerAutoLaunch.disable();
+  }
+
 
   let Tray = electron.Tray;
   let Menu = electron.Menu;
@@ -81,7 +91,9 @@ function createWindow () {
   mainWindow = new BrowserWindow({
     width: 750,
     height: 600,
-    frame: false
+    frame: false,
+    resizable: false,
+    skipTaskbar: true,
   })
 
   // mainWindow.minimize()
@@ -103,14 +115,6 @@ function createWindow () {
     tray.setHighlightMode('never')
   })
 
-  mainWindow.on('closed', function () {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    mainWindow.hide()
-
-  })
-
   loadWindows()
 
   // Register shortcut
@@ -121,11 +125,16 @@ function createWindow () {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow)
+app.on('ready', function(){
+  createWindow();
+  autoUpdater.checkForUpdates();
+})
 
-app.on('will-quit', () => {
+
+app.on('before-quit', () => {
   globalShortcut.unregisterAll()
 })
+
 
 
 // IPC Handlers
@@ -141,7 +150,7 @@ ipcMain.on('get-snippet', function(event, id) {
   if (process.platform == 'darwin') {
     electron.Menu.sendActionToFirstResponder('hide:');
   }else{
-  	robot.keyTap('tab', ['alt']);
+  	// robot.keyTap('tab', ['alt']);
   }
 
   getWindow.hide();
@@ -151,37 +160,32 @@ ipcMain.on('get-snippet', function(event, id) {
   }, function(err, docs) {
     if (docs) {
 
-      const {clipboard} = require('electron')
-
       var existingData = clipboard.readText();
-
       clipboard.clear();
 
-
       clipboard.writeText((docs.snippet).toString());
-
+      
       if(process.platform === 'darwin'){
         robot.keyTap('v', ['command']);
       }else{
         robot.keyTap('v', ['control']);
       }
 
-      console.log()
-      clipboard.clear();
-      
-      clipboard.writeText(existingData);
-
+      setTimeout(function(){
+        clipboard.clear();
+        clipboard.writeText(existingData);
+      }, 3000);      
     }
   })
 })
 
 ipcMain.on('suggest-snippet', function(event, text) {
   if (searcher) {
-    var snippet = (searcher.search(text))[0];
+    var snippet = (searcher.search(text));
     if (snippet) {
-      getWindow.webContents.send('show-suggestion', snippet.snippet, snippet._id);
+      getWindow.webContents.send('show-suggestion', snippet);
     } else {
-      getWindow.webContents.send('show-suggestion', "", "");
+      getWindow.webContents.send('show-suggestion', null);
     }
   }
 })
@@ -211,6 +215,14 @@ ipcMain.on('save-shortcut', function (event, accelerator) {
   setShortcut(global.shortcut, accelerator)
 })
 
+autoUpdater.on('update-downloaded', (info) => {
+    mainWindow.webContents.send('updateReady')
+});
+
+// when receiving a quitAndInstall signal, quit and install the new version ;)
+ipcMain.on("quitAndInstall", (event, arg) => {
+    autoUpdater.quitAndInstall();
+})
 
 // Helper Functions
 
@@ -277,7 +289,9 @@ function loadWindows(){
 	  frame: false,
 	  show: false,
 	  parent: mainWindow, 
-	  modal: true
+	  modal: true,
+    resizable: false,
+    skipTaskbar: true,
 	})
 
 	configWindow.loadURL(url.format({
@@ -286,14 +300,16 @@ function loadWindows(){
 	  slashes: true
 	}))
 
-	configWindow.webContents.openDevTools();
-	configWindow.setFullScreenable(false)
+	// configWindow.webContents.openDevTools();
+ 
 
 	keyWindow = new BrowserWindow({
 	  width: 400,
 	  height: 60,
 	  frame: false,
 	  show: false,
+    resizable: false,
+    skipTaskbar: true,
 	})
 
 	keyWindow.loadURL(url.format({
@@ -310,6 +326,8 @@ function loadWindows(){
 	  height: 400,
 	  frame: false,
 	  show: false,
+    resizable: false,
+    skipTaskbar: true,
 	})
 
 
@@ -319,13 +337,19 @@ function loadWindows(){
 	  slashes: true
 	}))
 
+  addWindow.setAlwaysOnTop(true, "floating");
+  addWindow.setVisibleOnAllWorkspaces(true);
+  addWindow.setFullScreenable(false);
+
 	// addWindow.webContents.openDevTools();
 
 	getWindow = new BrowserWindow({
 	  width: 650,
 	  height: 50,
 	  frame: false,
-	  show: false
+	  show: false,
+    resizable: false,
+    skipTaskbar: true,
 	})
 
 	var position = getWindow.getPosition()

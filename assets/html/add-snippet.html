@@ -7,6 +7,11 @@
   </head>
   <body>
       <style>
+
+      textarea:focus {
+        outline: none;
+      }
+
       body{
         background: transparent;
         overflow: hidden;
@@ -26,10 +31,10 @@
         color: blue;
         border: 0;
         height: 410px;
-        width: 510px;
+        width: 80%;
         padding: 20px;
         opacity: 0.8;
-        margin-left: -10px;
+        margin-left: 40px;
         margin-top: -10px; 
       }
 
@@ -42,9 +47,16 @@
         font-size: 20px;
         opacity: 1;
       }
+
+      #logo{
+        position: absolute;
+        left: 5px;
+        top: 5px; 
+      }
     </style>
 
     <div>
+        <img alt="logo" src="../img/logo.svg" id="logo" width="40" height="40">  
 
         <textarea id="snippet" type="text" name="snippet" placeholder="Paste Snippet" required></textarea>
       

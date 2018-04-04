@@ -1,23 +1,32 @@
 {
   "name": "snippeteer",
-  "version": "1.0.0",
-  "description": "The snippet master you always wanted.",
+  "version": "0.1.1",
+  "description": "It makes you more productive by searching and pasting your stored snippets.",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "pack": "build --dir",
-    "dist": "build"
+    "dist": "build --mac",
+    "dist:mac": "build --mac",
+    "dist:win": "build --win",
+    "dist:linux": "build --linux",
+    "ship": "build --win --ia32 -p always"
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "repository": "https://github.com/therishabhpandey/snippeteer.git",
   "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
+    "productivity",
+    "snippets",
+    "text",
+    "electron",
+    "macOS",
+    "windows",
+    "linux"
   ],
-  "author": "Rishabh Pandey",
-  "license": "CC0-1.0",
+  "author": {
+    "name": "Rishabh Pandey",
+    "email": "rishpandey@hotmail.com"
+  },
+  "license": "MIT",
   "devDependencies": {
     "electron": "^1.8.4",
     "electron-builder": "^20.8.1",
@@ -31,15 +40,17 @@
   "dependencies": {
     "auto-launch": "^5.0.5",
     "electron-config": "^1.0.0",
+    "electron-updater": "^2.21.4",
     "fuzzy-search": "^2.0.1",
     "lru-cache": "^4.1.2",
     "nedb": "^1.8.0",
+    "npm": "^5.8.0",
     "robotjs": "latest"
   },
   "build": {
     "appId": "snippeteer",
     "mac": {
-      "category": "your.app.category.type",
+      "category": "public.app-category.productivity",
       "extendInfo": {
         "LSBackgroundOnly": 1,
         "LSUIElement": 1

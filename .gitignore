@@ -9,3 +9,5 @@ dist/
 \.eslintrc\.json
 
 \.eslintrc\.js
+
+electron-builder\.yml
