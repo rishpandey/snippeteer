@@ -143,8 +143,9 @@
 								}else{
 									snippetCounter = 0;
 								}
+
 								document.getElementById('suggestion').value = currentSnippets[snippetCounter].snippet;
-								document.getElementById('suggestion').dataset.id = currentSnippets[snippetCounter].id;
+								document.getElementById('suggestion').dataset.id = currentSnippets[snippetCounter]._id;
 							
 							}
 						}
@@ -201,15 +202,12 @@
 
 					}; 
 
-
-
 					ipcRenderer.on('show-suggestion', (event, snippet) => {
 						if(snippet){
 							currentSnippets = snippet;
 							snippetCounter = 0;
-
-							document.getElementById('suggestion').value = snippet[snippetCounter].snippet;
-							document.getElementById('suggestion').dataset.id = snippet[snippetCounter].id;      
+							document.getElementById('suggestion').value = snippet[0].snippet;
+							document.getElementById('suggestion').dataset.id = snippet[0]._id;
 						}  
 					});
 
