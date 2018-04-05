@@ -115,7 +115,9 @@ function createWindow () {
     tray.setHighlightMode('never')
   })
 
-  loadWindows()
+  mainWindow.once('ready-to-show', () => {
+    loadWindows()
+  })
 
   // Register shortcut
   loadShortcut()
@@ -150,7 +152,7 @@ ipcMain.on('get-snippet', function(event, id) {
   if (process.platform == 'darwin') {
     electron.Menu.sendActionToFirstResponder('hide:');
   }else{
-  	// robot.keyTap('tab', ['alt']);
+  	robot.keyTap('tab', ['alt']);
   }
 
   getWindow.hide();
@@ -158,6 +160,9 @@ ipcMain.on('get-snippet', function(event, id) {
   db.findOne({
     _id: id
   }, function(err, docs) {
+    if(err){
+      console.log(err);
+    }
     if (docs) {
 
       var existingData = clipboard.readText();
@@ -192,7 +197,44 @@ ipcMain.on('suggest-snippet', function(event, text) {
 
 ipcMain.on('show-config', function(a) {
 
-  configWindow.show();
+    configWindow = new BrowserWindow({
+      width: 400,
+      height: 400,
+      frame: false,
+      show: false,
+      parent: mainWindow, 
+      modal: true,
+      resizable: false,
+      skipTaskbar: true,
+    })
+
+    configWindow.loadURL(url.format({
+      pathname: path.join(__dirname, 'assets' , 'html' ,'get-config.html'),
+      protocol: 'file:',
+      slashes: true
+    }))
+
+    // configWindow.webContents.openDevTools();
+   
+    configWindow.once('ready-to-show', () => {
+      configWindow.show()
+
+      keyWindow = new BrowserWindow({
+        width: 400,
+        height: 60,
+        frame: false,
+        show: false,
+        resizable: false,
+        skipTaskbar: true,
+      })
+
+      keyWindow.loadURL(url.format({
+        pathname: path.join(__dirname , 'assets' , 'html' , 'get-key.html'),
+        protocol: 'file:',
+        slashes: true
+      }))
+      keyWindow.setFullScreenable(false)
+    })
 
 })
 
@@ -283,44 +325,6 @@ function loadShortcut () {
 }
 
 function loadWindows(){
-	configWindow = new BrowserWindow({
-	  width: 400,
-	  height: 400,
-	  frame: false,
-	  show: false,
-	  parent: mainWindow, 
-	  modal: true,
-    resizable: false,
-    skipTaskbar: true,
-	})
-
-	configWindow.loadURL(url.format({
-	  pathname: path.join(__dirname, 'assets' , 'html' ,'get-config.html'),
-	  protocol: 'file:',
-	  slashes: true
-	}))
-
-	// configWindow.webContents.openDevTools();
- 
-
-	keyWindow = new BrowserWindow({
-	  width: 400,
-	  height: 60,
-	  frame: false,
-	  show: false,
-    resizable: false,
-    skipTaskbar: true,
-	})
-
-	keyWindow.loadURL(url.format({
-	  pathname: path.join(__dirname , 'assets' , 'html' , 'get-key.html'),
-	  protocol: 'file:',
-	  slashes: true
-	}))
-
-
-	keyWindow.setFullScreenable(false)
-
 	addWindow = new BrowserWindow({
 	  width: 500,
 	  height: 400,

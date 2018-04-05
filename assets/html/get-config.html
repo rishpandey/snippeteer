@@ -84,7 +84,7 @@
 
       window.onload = function() {
 
-        handleFocusOut();
+        // handleFocusOut();
         handleStartup();
         handleEventListeners();
 
@@ -100,8 +100,7 @@
           isEscape = (evt.keyCode == 27);
         }
         if (isEscape) {
-          win.hide();
-          location.reload();
+          win.close();
         }
       }; 
 
@@ -109,12 +108,12 @@
         var win = remote.getCurrentWindow();
 
         win.on('blur', () => {
-          win.hide();
+          win.close();
         })       
       }
 
       function handleClose(){
-          win.hide();
+          win.close();
       }
 
       function registerShortcut(type){
