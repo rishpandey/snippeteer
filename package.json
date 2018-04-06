@@ -1,6 +1,6 @@
 {
   "name": "snippeteer",
-  "version": "0.1.1",
+  "version": "0.1.0",
   "description": "It makes you more productive by searching and pasting your stored snippets.",
   "main": "main.js",
   "scripts": {
@@ -10,7 +10,7 @@
     "dist:mac": "build --mac",
     "dist:win": "build --win",
     "dist:linux": "build --linux",
-    "ship": "build --win --ia32 -p always",
+    "ship": "build --mac --linux --win --ia32 -p always",
     "ship:mac": "build --mac -p always",
     "ship:win": "build --win -p always",
     "ship:linux": "build --linux -p always"

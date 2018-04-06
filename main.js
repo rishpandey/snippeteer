@@ -94,6 +94,7 @@ function createWindow () {
     frame: false,
     resizable: false,
     skipTaskbar: true,
+    show: false,
   })
 
   // mainWindow.minimize()
@@ -116,6 +117,7 @@ function createWindow () {
   })
 
   mainWindow.once('ready-to-show', () => {
+    mainWindow.show()
     loadWindows()
   })
 
