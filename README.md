@@ -4,7 +4,7 @@
 
 # SNIPPETEER
 
-**SNIPPETEER** makes you more productive by eliminating the need of typing the texts you frequently. It registers system shortcuts for storing and searching snippets and let's you quickly paste stored text snippet in all applications.
+**SNIPPETEER** makes you more productive by eliminating the need of typing the texts frequently. It registers system shortcuts for storing and searching snippets and let's you quickly paste stored text snippet in all applications.
 
 ## Table of Contents
 
