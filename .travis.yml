@@ -1,0 +1,14 @@
+language: node_js
+node_js:
+- '9'
+os: osx
+branches:
+  only:
+  - master
+  - production
+before_script:
+- npm install
+- npm rebuild --runtime=electron --target=1.8.4 --disturl=https://atom.io/download/atom-shell --abi=57
+script:
+- npm run dist:all -p always
+

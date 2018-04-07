@@ -11,3 +11,5 @@ dist/
 \.eslintrc\.js
 
 electron-builder\.yml
+
+yarn-error\.log

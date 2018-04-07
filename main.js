@@ -94,6 +94,7 @@ function createWindow () {
     frame: false,
     resizable: false,
     skipTaskbar: true,
+    show: false,
   })
 
   // mainWindow.minimize()
@@ -116,8 +117,11 @@ function createWindow () {
   })
 
   mainWindow.once('ready-to-show', () => {
+    mainWindow.show()
     loadWindows()
   })
+
+
 
   // Register shortcut
   loadShortcut()
@@ -129,7 +133,12 @@ function createWindow () {
 // Some APIs can only be used after this event occurs.
 app.on('ready', function(){
   createWindow();
-  autoUpdater.checkForUpdates();
+
+  const isDev = require('electron-is-dev');
+   
+  if (! isDev) {
+    autoUpdater.checkForUpdates();      
+  }
 })
 
 
@@ -217,6 +226,7 @@ ipcMain.on('show-config', function(a) {
     // configWindow.webContents.openDevTools();
    
     configWindow.once('ready-to-show', () => {
+      
       configWindow.show()
 
       keyWindow = new BrowserWindow({

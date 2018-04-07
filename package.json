@@ -1,21 +1,21 @@
 {
   "name": "snippeteer",
-  "version": "0.1.1",
+  "version": "0.1.0",
   "description": "It makes you more productive by searching and pasting your stored snippets.",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "pack": "build --dir",
-    "dist": "build --mac",
+    "dist:all": "build --mac --linux --win --ia32",
     "dist:mac": "build --mac",
     "dist:win": "build --win",
     "dist:linux": "build --linux",
-    "ship": "build --win --ia32 -p always",
+    "ship": "build --mac --linux --win --ia32 -p always",
     "ship:mac": "build --mac -p always",
     "ship:win": "build --win -p always",
     "ship:linux": "build --linux -p always"
   },
-  "repository": "https://github.com/therishabhpandey/snippeteer.git",
+  "repository": "https://github.com/imRish/snippeteer.git",
   "keywords": [
     "productivity",
     "snippets",
@@ -32,7 +32,7 @@
   "license": "MIT",
   "devDependencies": {
     "electron": "^1.8.4",
-    "electron-builder": "^20.8.1",
+    "electron-builder": "^20.8.2",
     "eslint-config-google": "^0.9.1",
     "eslint-config-standard": "^11.0.0",
     "eslint-plugin-import": "^2.10.0",
@@ -43,7 +43,8 @@
   "dependencies": {
     "auto-launch": "^5.0.5",
     "electron-config": "^1.0.0",
-    "electron-updater": "^2.21.4",
+    "electron-is-dev": "^0.3.0",
+    "electron-updater": "^2.21.8",
     "fuzzy-search": "^2.0.1",
     "lru-cache": "^4.1.2",
     "nedb": "^1.8.0",

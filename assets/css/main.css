@@ -104,9 +104,16 @@ a.button:hover {
 	
 }
 
+#tag-line{
+	font-weight: 200;
+	font-size: 16px;
+	margin-top: -5px;
+	margin-bottom: 10px;	
+}
 
 /*--------------*/
 body {
+	letter-spacing:0.15px;
 	margin: 0;
 	background-color: #f2f2f2;
 	font-family: 'Lato', sans-serif;

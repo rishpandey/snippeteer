@@ -2,15 +2,17 @@
   <img src="assets/img/logo.png" height="180" width="180" />
 </p>
 
-# SNIPPETEER
+# SNIPPETEER [![Build Status](https://travis-ci.org/imRish/snippeteer.svg?branch=master)](https://travis-ci.org/imRish/snippeteer)
+_**Snippets Anywhere**_
 
-**SNIPPETEER** makes you more productive by eliminating the need of typing the texts you frequently. It registers system shortcuts for storing and searching snippets and let's you quickly paste stored text snippet in all applications.
+**SNIPPETEER** is a productivity tool that rescues you from retyping. It can quickly search the snippets you choose to store and paste them in all applications.
 
 ## Table of Contents
 
 - [Download](#download)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Screenshots](#screenshots)
 - [Support](#support)
 - [Contributing](#contributing)
 
@@ -47,13 +49,19 @@ npm run dist
 ## Usage
 
 Download or build a release of SNIPPETEER.
+
 Set up these shortcuts, which will be globally registered.     
 - Add a snippet 
 - Search for snippet
 
-These shortcuts **should be accesible from everywhere** in your system, so make sure to not use shortcuts that may conflict with your focussed applications. 
+These **shortcuts should be accesible from everywhere** in your system, so make sure to not use shortcuts that may conflict with your focussed applications. After adding the snippets, you can use the search feature to find and paste the snippet in other applications like notepad, sublime, etc.
 
 _For more examples and usage, please refer to the [Wiki](https://github.com/imRish/snippeteer/wiki)._
+
+## Screenshots
+<p align="center">
+	<img src="https://github.com/imRish/snippeteer/blob/master/assets/img/screenshot.jpg" width="100%"></img>
+</p>
 
 ## Support
 
