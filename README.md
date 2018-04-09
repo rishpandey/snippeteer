@@ -15,6 +15,7 @@ _**Snippets Anywhere**_
 - [Screenshots](#screenshots)
 - [Support](#support)
 - [Contributing](#contributing)
+- [Donate](#donate)
 
 ## Download
 
@@ -70,3 +71,8 @@ Please [open an issue](https://github.com//imrish/snippeteer/issues/new) for sup
 ## Contributing
 
 Please contribute using [Github Flow](https://guides.github.com/introduction/flow/). Create a branch, add commits, and [open a pull request](https://github.com/imrish/snippeteer/compare/).
+
+## Donate
+If you love this project and it saves your time, leave a star. 
+You can also  [![paypal](https://yourdonation.rocks/images/badge.svg)](https://www.paypal.me/imrish)  to support this project and its developers. 
+

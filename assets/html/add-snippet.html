@@ -2,11 +2,14 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,900' rel='stylesheet' type='text/css'>
     <title>Add a text snippet</title>
   </head>
   <body>
       <style>
+      @font-face {
+          font-family: Lato;
+          src: url(../font/Lato-Light.ttf);
+      }
 
       textarea:focus {
         outline: none;
@@ -17,7 +20,7 @@
         overflow: hidden;
         background: linear-gradient(to right, #11558a, #55c2c1);
         -webkit-font-smoothing: subpixel-antialiased;
-        font-family: 'Lato', sans-serif;
+        font-family: Lato;
       }
 
       div{
@@ -40,6 +43,7 @@
 
       textarea,
       textarea::-webkit-input-placeholder {
+        font-family: Lato;
         color: white;
         text-align: left;
         font-weight: 300;

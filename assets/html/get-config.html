@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>Add a text snippet</title>
-  <link href='http://fonts.googleapis.com/css?family=Lato:300,400,900' rel='stylesheet' type='text/css'>
   <link href="../css/main.css" rel="stylesheet">
 
 
@@ -48,6 +47,22 @@
     padding: 0;
     font-weight: 300;
   }
+
+  #add-label, #search-label{
+    position: absolute;
+    font-size: 12px; 
+    display: none;
+  }
+
+  #add-label{
+    left: 38%;
+    top: 24%;
+  }
+  #search-label{
+    left: 38%;
+    top: 49%;
+  }
+
 </style>
 
 <div class="center">
@@ -62,10 +77,11 @@
     <h3 class="heading" style="font-size: 17px">REGISTER SHORTCUTS</h3>
     <!-- <a href="#" class="shortcut-blk" onclick="return registerShortcut('show');">SHOW SNIPPETEER</a>
     <br> -->
-
-    <a href="#" id="add-short" class="shortcut-blk" onclick="return registerShortcut('add');"><p>Add new snippet</p></a>
+    <span id="add-label">Add new Snippet</span>
+    <a href="#" class="shortcut-blk" onclick="return registerShortcut('add');"><p id="add-short">Add new snippet</p></a>
     <br>
-    <a href="#" id="search-short" class="shortcut-blk" onclick="return registerShortcut('search');"><p>Search snippet</p></a>
+    <span id="search-label">Search Snippet</span>
+    <a href="#"  class="shortcut-blk" onclick="return registerShortcut('search');"><p id="search-short">Search snippet</p></a>
     <br>
 
     <p><input type="checkbox" name="startup" id="startup">Launch at startup</p>
@@ -81,12 +97,21 @@
       // require('./renderer.js')
       const remote = require('electron').remote;
       var win = remote.getCurrentWindow();
+      const Config = require('electron-config')
+      const config = new Config()
+
+      addShortcut = config.get('add');
+      searchShortcut = config.get('search');
+
 
       window.onload = function() {
 
+
+        handleButtons();
+
+
         // handleFocusOut();
         handleStartup();
-        handleEventListeners();
 
       };
 
@@ -148,10 +173,41 @@
         });
       }
 
-      function handleEventListeners(){
-        document.getElementById('add-short').addEventListener('mouseover', function(event){
+      
+      require('electron').ipcRenderer.on('refresh-shortcuts', (event) => {
+        handleButtons();  
+      });
+      
+      function handleButtons (){
 
-        });
+        addShortcut = config.get('add');
+        searchShortcut = config.get('search');
+
+        if(addShortcut){
+
+          document.getElementById('add-short').addEventListener("mouseover", function(){
+            this.innerHTML = addShortcut;
+            document.getElementById('add-label').style.display = "block";
+          });
+
+          document.getElementById('add-short').addEventListener("mouseout", function(){
+            this.innerHTML = "Add a snippet";
+            document.getElementById('add-label').style.display = "none";
+          });
+        }
+
+        if(searchShortcut){
+          document.getElementById('search-short').addEventListener("mouseover", function(){
+            this.innerHTML = searchShortcut;
+            document.getElementById('search-label').style.display = "block";
+          });
+
+          document.getElementById('search-short').addEventListener("mouseout", function(){
+            this.innerHTML = "Search snippet";
+            document.getElementById('search-label').style.display = "none";
+          });
+        }
+
       }
     </script>
   </body>

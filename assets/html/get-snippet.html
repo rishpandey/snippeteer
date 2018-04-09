@@ -2,18 +2,23 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<link href='http://fonts.googleapis.com/css?family=Lato:300,400,900' rel='stylesheet' type='text/css'>
 </head>
 
 <body>
 	<style>
+	
+	@font-face {
+	    font-family: Lato;
+	    src: url(../font/Lato-Light.ttf);
+	}
+
 	input:focus {
 	  outline: none;
 	}
 
 	body{
 		background: transparent;
-        font-family: 'Lato', sans-serif;
+        font-family: Lato;
 		overflow: hidden;
 		background: linear-gradient(to right, #11558a, #55c2c1);
 		-webkit-font-smoothing: subpixel-antialiased;
@@ -38,6 +43,7 @@
 
 	input,
 	input::-webkit-input-placeholder {
+        font-family: Lato;
 		text-indent: 50px;  
 		color: white;
 		text-align: left;
@@ -101,7 +107,8 @@
 						isEscape = (evt.keyCode == 27);
 					}
 					if (isEscape) {
-						closeWindow();
+						document.getElementById("identifier").value = "";  
+						document.getElementById("suggestion").value = ""; 
 					}
 				}; 
 

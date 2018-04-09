@@ -265,6 +265,8 @@ ipcMain.on('save-shortcut', function (event, accelerator) {
 
   console.log(accelerator + '\n' + global.shortcut)
   setShortcut(global.shortcut, accelerator)
+  configWindow.webContents.send('refresh-shortcuts');
+
 })
 
 autoUpdater.on('update-downloaded', (info) => {
