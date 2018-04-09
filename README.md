@@ -2,10 +2,11 @@
   <img src="assets/img/logo.png" height="180" width="180" />
 </p>
 
-# SNIPPETEER [![Build Status](https://travis-ci.org/imRish/snippeteer.svg?branch=master)](https://travis-ci.org/imRish/snippeteer)
+# SNIPPETEER [![Build Status](https://travis-ci.org/imRish/snippeteer.svg?branch=master)](https://travis-ci.org/imRish/snippeteer) [![paypal](https://yourdonation.rocks/images/badge.svg)](https://www.paypal.me/imrish)
+
 _**Snippets Anywhere**_
 
-**SNIPPETEER** is a productivity tool that rescues you from retyping. It can quickly search the snippets you choose to store and paste them in all applications.
+**SNIPPETEER** is a productivity tool that rescues you from retyping. Just store the snippet using keyboard shortcut to search and paste them everywhere. 
 
 ## Table of Contents
 
@@ -15,7 +16,6 @@ _**Snippets Anywhere**_
 - [Screenshots](#screenshots)
 - [Support](#support)
 - [Contributing](#contributing)
-- [Donate](#donate)
 
 ## Download
 
@@ -55,7 +55,8 @@ Set up these shortcuts, which will be globally registered.
 - Add a snippet 
 - Search for snippet
 
-These **shortcuts should be accesible from everywhere** in your system, so make sure to not use shortcuts that may conflict with your focussed applications. After adding the snippets, you can use the search feature to find and paste the snippet in other applications like notepad, sublime, etc.
+These **shortcuts should be accesible from everywhere** in your system, so make sure to not use shortcuts that may conflict with your focussed applications. After adding the snippets, you can search snippets using search shortcut to find and paste the snippet in other applications like notepad, sublime, etc.
+Use **shift** in Search window to toggle between suggested snippets. 
 
 _For more examples and usage, please refer to the [Wiki](https://github.com/imRish/snippeteer/wiki)._
 
@@ -74,5 +75,5 @@ Please contribute using [Github Flow](https://guides.github.com/introduction/flo
 
 ## Donate
 If you love this project and it saves your time, leave a star. 
-You can also  [![paypal](https://yourdonation.rocks/images/badge.svg)](https://www.paypal.me/imrish)  to support this project and its developers. 
+You can also [DONATE](https://www.paypal.me/imrish) to support this project and its developers. 
 
