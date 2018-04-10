@@ -38,7 +38,7 @@ cd snippeteer
 npm install
 
 # Rebuild dependencies for Electron
-npm rebuild --runtime=electron --target=1.8.4 --disturl=https://atom.io/download/atom-shell --abi=57
+./node_modules/.bin/electron-rebuild
 
 # Run app
 npm start
