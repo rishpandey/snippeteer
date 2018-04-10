@@ -8,7 +8,7 @@ branches:
   - production
 before_script:
 - npm install
-- npm rebuild --runtime=electron --target=1.8.4 --disturl=https://atom.io/download/atom-shell --abi=57
+- npm rebuild --runtime=electron --target=1.8.4 --disturl=https://atom.io/download/atom-shell --abi=59
 script:
 - npm run dist:all -p always
 
