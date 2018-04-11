@@ -4,13 +4,14 @@
   "description": "It makes you more productive by searching and pasting your stored snippets.",
   "main": "main.js",
   "scripts": {
+    "postinstall": "./node_modules/.bin/electron-rebuild",
     "start": "electron .",
     "pack": "build --dir",
-    "dist:all": "build --mac --linux --win --ia32",
+    "dist:all": "build --mac --linux --win",
     "dist:mac": "build --mac",
     "dist:win": "build --win",
     "dist:linux": "build --linux",
-    "ship": "build --mac --linux --win --ia32 -p always",
+    "ship": "build --mac --linux --win -p always",
     "ship:mac": "build --mac -p always",
     "ship:win": "build --win -p always",
     "ship:linux": "build --linux -p always"
@@ -33,6 +34,7 @@
   "devDependencies": {
     "electron": "^1.8.4",
     "electron-builder": "^20.8.2",
+    "electron-rebuild": "^1.7.3",
     "eslint-config-google": "^0.9.1",
     "eslint-config-standard": "^11.0.0",
     "eslint-plugin-import": "^2.10.0",
@@ -81,8 +83,15 @@
       ]
     },
     "win": {
-      "target": "NSIS",
+      "target": "nsis",
       "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "createDesktopShortcut": true,
+      "deleteAppDataOnUninstall": true,
+      "license": "LICENSE",
+      "oneClick": true,
+      "createStartMenuShortcut": true
     }
   }
 }
