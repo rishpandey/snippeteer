@@ -77,14 +77,17 @@ function createWindow () {
     { label: 'Quit SNIPPETEER', click: function(){ app.quit() } }
   ])
 
-
-  tray.on('click', () => {
-    mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show()
-  })
-
-  tray.on('right-click', (event, bounds) => {
-    tray.popUpContextMenu(contextMenu);
-  });
+  if(process.platform !== "linux"){
+    tray.on('click', () => {
+      mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show()
+    })
+    tray.on('right-click', (event, bounds) => {
+      tray.popUpContextMenu(contextMenu);
+    });    
+  }
+  else{
+    tray.setContextMenu(contextMenu)
+  }
 
 
   // Create the browser window.
@@ -93,7 +96,7 @@ function createWindow () {
     height: 600,
     frame: false,
     resizable: false,
-    skipTaskbar: true,
+    skipTaskbar: (true && process.platform !== 'linux'),
     show: false,
   })
 
@@ -160,7 +163,7 @@ ipcMain.on('get-snippet', function(event, id) {
 
   if (process.platform == 'darwin') {
     electron.Menu.sendActionToFirstResponder('hide:');
-  }else{
+  }else if(process.platform == 'win32'){
   	robot.keyTap('tab', ['alt']);
   }
 
