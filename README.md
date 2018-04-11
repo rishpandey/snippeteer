@@ -37,9 +37,6 @@ cd snippeteer
 # Install dependencies
 npm install
 
-# Rebuild dependencies for Electron
-./node_modules/.bin/electron-rebuild
-
 # Run app
 npm start
 

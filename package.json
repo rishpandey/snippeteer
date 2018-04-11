@@ -4,6 +4,7 @@
   "description": "It makes you more productive by searching and pasting your stored snippets.",
   "main": "main.js",
   "scripts": {
+    "postinstall": "./node_modules/.bin/electron-rebuild",
     "start": "electron .",
     "pack": "build --dir",
     "dist:all": "build --mac --linux --win --ia32",
