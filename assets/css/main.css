@@ -1,10 +1,34 @@
+:not(input):not(textarea),
+:not(input):not(textarea)::after,
+:not(input):not(textarea)::before {
+    -webkit-user-select: none;
+    user-select: none;
+    cursor: default;
+}
+input[type="checkbox"]{
+  zoom: 1.5;
+}
+
 @font-face {
     font-family: Lato;
     src: url(../font/Lato-Light.ttf);
 }
 
+body {
+	letter-spacing:0.15px;
+	margin: 0;
+	background-color: #f2f2f2;
+	font-family: Lato;
+	font-weight: 300;
+	font-size: 16px;
+	color: #555;
+
+	-webkit-font-smoothing: antialiased;
+	overflow: hidden;
+}
+
 .center{
-	text-align: center;mask-type: 
+	text-align: center;
 	margin: 0 auto;
 }
 
@@ -33,7 +57,6 @@ a.button {
 	background: transparent;
 	text-decoration: none;
 }
-
 a.button:hover {
 	cursor: pointer;
 	color: white !important;
@@ -41,6 +64,7 @@ a.button:hover {
 	margin-bottom: 5px;
 }
 
+/* Navigation bar */
 .topnav {
 	background-color: transparent;
 	overflow: hidden;
@@ -48,8 +72,6 @@ a.button:hover {
 	left: 88%;
 	top: 1%;
 }
-
-/* Style the links inside the navigation bar */
 .topnav a {
 	cursor: pointer;
 	border-radius: 25px;
@@ -63,22 +85,11 @@ a.button:hover {
 }
 .topnav a, a:visited, a:hover, a:active {
 	color: #105689 !important;
-	cursor: pointer;
-
 }
 .topnav a:hover  {
-	cursor: pointer;
 	background-color: #ddd;
 	color: black;
 }
-
-
-
-.tag-line h2{
-	color: #042c58;
-	margin-top: 0 !important;
-}
-
 
 .config a{
 	cursor: pointer;
@@ -99,6 +110,11 @@ a.button:hover {
 	
 }
 
+.tag-line h2{
+	color: #042c58;
+	margin-top: 0 !important;
+}
+
 #tag-line{
 	font-weight: 200;
 	font-size: 16px;
@@ -106,33 +122,12 @@ a.button:hover {
 	margin-bottom: 10px;	
 }
 
-/*--------------*/
-body {
-	letter-spacing:0.15px;
-	margin: 0;
-	background-color: #f2f2f2;
-	font-family: Lato;
-	font-weight: 300;
-	font-size: 16px;
-	color: #555;
-
-	-webkit-font-smoothing: antialiased;
-	-webkit-overflow-scrolling: touch;
-	overflow: hidden;
-}
-
 /* Titles */
 h1, h2, h3, h4, h5, h6 {
-	font-family: Lato;
 	font-weight: 300;
 	color: #333;
 }
-
-h1 {
-	font-size: 40px;
-}
-
-
+h1 { font-size: 40px; }
 h4 {
 	color: #95a5a6;
 	font-weight: 400;
@@ -209,7 +204,7 @@ i {
 /* HeaderWrap */
 #headerwrap {
 	background: url(../img/bg.png) no-repeat center top; 
-	background-attachment: relative;
+	background-attachment: fixed;
 	background-position: center center;
 
 	-webkit-background-size: cover;
@@ -229,3 +224,4 @@ i {
 	font-weight: 300;
 	letter-spacing: 1px;
 }
+
