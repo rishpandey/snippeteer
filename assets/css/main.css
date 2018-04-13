@@ -12,7 +12,6 @@ a, a:visited, a:hover, a:active {
 	color: #FFF !important;
 }
 
-
 a.button {
 	cursor: pointer;
 	display: block;
@@ -30,10 +29,9 @@ a.button {
 	color: #FFF ;
 	border-radius: 5px;
 	transition: all 0.2s ;
-    border-width: 2px;
+        border-width: 2px;
 	background: transparent;
 	text-decoration: none;
-
 }
 
 a.button:hover {
@@ -42,9 +40,6 @@ a.button:hover {
 	margin-top: 3px;
 	margin-bottom: 5px;
 }
-
-
-
 
 .topnav {
 	background-color: transparent;
@@ -66,14 +61,11 @@ a.button:hover {
 	text-decoration: none;
 	font-size: 17px;
 }
-
-.topnac a, a:visited, a:hover, a:active {
+.topnav a, a:visited, a:hover, a:active {
 	color: #105689 !important;
 	cursor: pointer;
 
 }
-
-/* Change the color of links on hover */
 .topnav a:hover  {
 	cursor: pointer;
 	background-color: #ddd;
@@ -91,17 +83,16 @@ a.button:hover {
 .config a{
 	cursor: pointer;
 	text-decoration: none;
-    border: solid;
-    font-size: 14px;
+        border: solid;
+        font-size: 14px;
 	border-color: rgba(139, 218, 216, 0.24);
-    border-width: 2px;
-    padding: 5px 10px;
-    display: block;
-    width: 50%;
+        border-width: 2px;
+        padding: 5px 10px;
+        display: block;
+        width: 50%;
 	border-radius: 5px;
-    margin: 0 auto;
+        margin: 0 auto;
 }
-
 .config a:visited, .config a:hover, .config a:active {
 	color: #FFF !important;
 	cursor: pointer;
@@ -170,21 +161,11 @@ a {
 	-o-transition: color 0.1s ease-in, background 0.1s ease-in;
 	transition: color 0.1s ease-in, background 0.1s ease-in;
 }
-
 a:hover,
 a:focus {
 	color: #7b7b7b;
 	text-decoration: none;
 	outline: 0;
-}
-
-a:before,
-a:after {
-	-webkit-transition: color 0.1s ease-in, background 0.1s ease-in;
-	-moz-transition: color 0.1s ease-in, background 0.1s ease-in;
-	-ms-transition: color 0.1s ease-in, background 0.1s ease-in;
-	-o-transition: color 0.1s ease-in, background 0.1s ease-in;
-	transition: color 0.1s ease-in, background 0.1s ease-in;
 }
 
 hr {
@@ -201,10 +182,7 @@ hr {
 	border-color: transparent;
 }
 
-.navbar-default .navbar-brand {
-	color: white;
-}
-
+.navbar-default .navbar-brand,
 .navbar-default .navbar-nav > li > a {
 	color: white;
 }
@@ -230,25 +208,17 @@ i {
 
 /* HeaderWrap */
 #headerwrap {
-
 	background: url(../img/bg.png) no-repeat center top; 
-	/*background: url(img/bg.png);*/
 	background-attachment: relative;
 	background-position: center center;
-
-	padding: 10px 20px; 
-	-webkit-background-size: 100%;
-	-moz-background-size: 100%;
-	-o-background-size: 100%;
-	background-size: 100%;
 
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
 	background-size: cover;
 
+	padding: 10px 20px; 
 	height: 600px; 
-
 }
 
 #headerwrap h1 {
