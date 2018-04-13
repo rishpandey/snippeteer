@@ -107,8 +107,14 @@
 						isEscape = (evt.keyCode == 27);
 					}
 					if (isEscape) {
-						document.getElementById("identifier").value = "";  
-						document.getElementById("suggestion").value = ""; 
+						var suggestionVal = document.getElementById("suggestion");
+						var idVal = document.getElementById("identifier");
+						if(idVal.value !== ""){
+							suggestionVal.value = "";  
+							idVal.value = ""; 							
+						}else{
+							closeWindow();
+						}
 					}
 				}; 
 
