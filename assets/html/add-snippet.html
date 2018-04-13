@@ -109,7 +109,7 @@
       function handleFocusOut(){ 
               var win = remote.getCurrentWindow();
               
-              win.on('blur', () => {
+              win.once('blur', () => {
                 win.hide();
                 location.reload();
               })       
