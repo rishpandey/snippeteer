@@ -1,1 +1,43 @@
-theme: jekyll-theme-cayman
+# Site settings
+title: SNIPPETEER
+description: 'SNIPPETEER is a productivity tool that rescues you from retyping. Just store the snippet using keyboard shortcut to search and paste them everywhere.'
+url: 'https://imrish.github.io/snippeteer/'
+baseurl: '/'
+# google_analytics: 'UA-XXXXXX-X'
+# disqus_shortname: 'your-disqus-name'
+
+author:
+  name: 'Rishabh Pandey'
+  email: rishpandey@hotmail.com
+  # twitter_username: rishhere
+  facebook_username: therishabhpandey
+  github_username:  imrish
+  linkedin_username:  rish95
+
+defaults:
+  -
+    scope:
+      path: ''
+      type: 'posts'
+    values:
+        layout: 'post'
+
+# Build settings
+destination: _site
+paginate: 10
+permalink: /:year/:title/
+markdown: kramdown
+highlighter: rouge
+
+sass:
+    sass_dir: _sass
+    style: compressed
+
+kramdown:
+  # use Github Flavored Markdown
+  input: GFM
+  # do not replace newlines by <br>s
+  hard_wrap: false
+
+plugins: ['jekyll-paginate']
+exclude: ['README.md', 'Gemfile', 'Gemfile.lock', 'screenshot.png']

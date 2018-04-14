@@ -1,0 +1,14 @@
+---
+title:  "Usage"
+date:   2018-04-14 15:04:23
+categories: [guide]
+tags: [jekyll]
+---
+Download or build a release of SNIPPETEER.
+
+Set up these shortcuts, which will be globally registered.
+
+Add a snippet
+Search for snippet
+These shortcuts should be accesible from everywhere in your system, so make sure to not use shortcuts that may conflict with your focussed applications. After adding the snippets, you can search snippets using search shortcut to find and paste the snippet in other applications like notepad, sublime, etc. Use shift in Search window to toggle between suggested snippets.
+

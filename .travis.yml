@@ -9,5 +9,5 @@ branches:
 before_script:
 - npm install
 script:
-- npm run dist:all -p always
+- npm run ship
 

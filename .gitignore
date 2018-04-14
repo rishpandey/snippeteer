@@ -13,3 +13,5 @@ dist/
 electron-builder\.yml
 
 yarn-error\.log
+
+docs/.sass-cache
