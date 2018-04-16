@@ -5,6 +5,8 @@ const fs = require('fs')
 const Config = require('electron-config')
 const config = new Config()
 
+const isDev = require('electron-is-dev');
+
 // Module to control application
 const electron = require('electron')
 const {
@@ -49,22 +51,11 @@ function createWindow () {
 
   if(process.platform === 'darwin'){
     app.dock.hide();
+  }  
+  
+  if(! isDev){
+    handleAutoStart();    
   }
-
-  var AutoLaunch = require('auto-launch');
-  var snippeteerAutoLaunch = new AutoLaunch({
-    name: 'SNIPPETEER',
-    isHidden: true
-  })
-
-  // enable autolaunch 
-  if(config.get('startup') !== false){
-    console.log('Working');
-    snippeteerAutoLaunch.enable();
-  }else{
-    snippeteerAutoLaunch.disable();
-  }
-
 
   let Tray = electron.Tray;
   let Menu = electron.Menu;
@@ -88,7 +79,10 @@ function createWindow () {
   else{
     tray.setContextMenu(contextMenu)
   }
+<<<<<<< HEAD
+=======
 
+>>>>>>> ea34851a6339525fdc3781099466a1daa5f67b96
 
   // Create the browser window.
   mainWindow = new BrowserWindow({
@@ -120,7 +114,11 @@ function createWindow () {
   })
 
   mainWindow.once('ready-to-show', () => {
-    mainWindow.show()
+
+    var startMinimized = (process.argv || []).indexOf('--hidden') !== -1;
+    if(! startMinimized){
+      mainWindow.show()      
+    }
     loadWindows()
   })
 
@@ -137,7 +135,6 @@ function createWindow () {
 app.on('ready', function(){
   createWindow();
 
-  const isDev = require('electron-is-dev');
    
   if (! isDev) {
     autoUpdater.checkForUpdates();      
@@ -384,4 +381,20 @@ function loadWindows(){
 	getWindow.setAlwaysOnTop(true, "floating");
 	getWindow.setVisibleOnAllWorkspaces(true);
 	getWindow.setFullScreenable(false);
+}
+
+function handleAutoStart(){
+
+  var AutoLaunch = require('auto-launch');
+  var snippeteerAutoLaunch = new AutoLaunch({
+    name: 'SNIPPETEER',
+    isHidden: true
+  })
+  // enable autolaunch 
+  if(config.get('startup') !== false){
+    snippeteerAutoLaunch.enable();
+  }else{
+    snippeteerAutoLaunch.disable();
+  }
+
 }
