@@ -79,10 +79,6 @@ function createWindow () {
   else{
     tray.setContextMenu(contextMenu)
   }
-<<<<<<< HEAD
-=======
-
->>>>>>> ea34851a6339525fdc3781099466a1daa5f67b96
 
   // Create the browser window.
   mainWindow = new BrowserWindow({
